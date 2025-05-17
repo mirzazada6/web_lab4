@@ -10,6 +10,7 @@ let data = {
   experience: [],
   references: []
 };
+
 const elements = {
   name: document.getElementById("name-input"),
   title: document.getElementById("title-input"),
@@ -26,6 +27,7 @@ const elements = {
   experience: document.getElementById("experience"),
   references: document.getElementById("references")
 };
+
 const validationPatterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   phone: /^\+?[\d\s-]+$/,
@@ -59,23 +61,33 @@ function initResume() {
 function renderEducation() {
   elements.education.innerHTML = data.education.map((e, index) => `
     <div class="education-item text-small">
-      <div class="form-group">
+      <div class="view-mode">${e.years || 'Years not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="years" value="${e.years}" placeholder="Years (e.g., 2020-2024)" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${e.school || 'School not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="school" value="${e.school}" placeholder="School/University" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${e.degree || 'Degree not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="degree" value="${e.degree}" placeholder="Degree" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${e.gpa ? 'GPA: ' + e.gpa : ''}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="gpa" value="${e.gpa || ''}" placeholder="GPA (optional)">
         <span class="error-message"></span>
       </div>
-      <button class="delete-btn" onclick="deleteEducation(${index})">Delete</button>
+      
+      <div class="edit-mode">
+        <button class="delete-btn" onclick="deleteEducation(${index})">Delete</button>
+      </div>
     </div>
   `).join('');
 }
@@ -83,9 +95,12 @@ function renderEducation() {
 function renderSkills() {
   elements.skills.innerHTML = data.skills.map((s, index) => `
     <div class="skill-item">
-      <input type="text" class="skill-input" value="${s}" required>
-      <span class="error-message"></span>
-      <button class="delete-btn" onclick="deleteSkill(${index})">Delete</button>
+      <div class="view-mode">${s || 'Skill not specified'}</div>
+      <div class="edit-mode">
+        <input type="text" class="skill-input" value="${s}" required>
+        <span class="error-message"></span>
+        <button class="delete-btn" onclick="deleteSkill(${index})">Delete</button>
+      </div>
     </div>
   `).join('');
 }
@@ -93,9 +108,12 @@ function renderSkills() {
 function renderLanguages() {
   elements.languages.innerHTML = data.languages.map((l, index) => `
     <div class="language-item text-small">
-      <input type="text" class="language-input" value="${l}" required>
-      <span class="error-message"></span>
-      <button class="delete-btn" onclick="deleteLanguage(${index})">Delete</button>
+      <div class="view-mode">${l || 'Language not specified'}</div>
+      <div class="edit-mode">
+        <input type="text" class="language-input" value="${l}" required>
+        <span class="error-message"></span>
+        <button class="delete-btn" onclick="deleteLanguage(${index})">Delete</button>
+      </div>
     </div>
   `).join('');
 }
@@ -103,15 +121,24 @@ function renderLanguages() {
 function renderExperience() {
   elements.experience.innerHTML = data.experience.map((exp, index) => `
     <div class="experience-item text-small">
-      <div class="form-group">
+      <div class="view-mode"><strong>${exp.company || 'Company not specified'}</strong></div>
+      <div class="edit-mode form-group">
         <input type="text" class="company" value="${exp.company}" placeholder="Company" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${exp.title || 'Title not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="job-title" value="${exp.title}" placeholder="Job Title" required>
         <span class="error-message"></span>
       </div>
-      <div class="responsibilities">
+      
+      <div class="view-mode">
+        ${exp.responsibilities.length > 0 ? 
+          '<ul>' + exp.responsibilities.map(r => `<li>${r || 'Responsibility not specified'}</li>`).join('') + '</ul>' : 
+          'No responsibilities specified'}
+      </div>
+      <div class="edit-mode responsibilities">
         ${exp.responsibilities.map((r, i) => `
           <div class="form-group responsibility">
             <input type="text" value="${r}" placeholder="Responsibility" required>
@@ -119,8 +146,11 @@ function renderExperience() {
           </div>
         `).join('')}
       </div>
-      <button onclick="addResponsibility(${index})">Add Responsibility</button>
-      <button class="delete-btn" onclick="deleteExperience(${index})">Delete Experience</button>
+      
+      <div class="edit-mode">
+        <button onclick="addResponsibility(${index})">Add Responsibility</button>
+        <button class="delete-btn" onclick="deleteExperience(${index})">Delete Experience</button>
+      </div>
     </div>
   `).join('');
 }
@@ -128,25 +158,46 @@ function renderExperience() {
 function renderReferences() {
   elements.references.innerHTML = data.references.map((ref, index) => `
     <div class="reference-item text-small">
-      <div class="form-group">
+      <div class="view-mode"><strong>${ref.name || 'Name not specified'}</strong></div>
+      <div class="edit-mode form-group">
         <input type="text" class="ref-name" value="${ref.name}" placeholder="Name" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${ref.position || 'Position not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="text" class="ref-position" value="${ref.position}" placeholder="Position" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${ref.phone || 'Phone not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="tel" class="ref-phone" value="${ref.phone}" placeholder="Phone" required>
         <span class="error-message"></span>
       </div>
-      <div class="form-group">
+      
+      <div class="view-mode">${ref.email || 'Email not specified'}</div>
+      <div class="edit-mode form-group">
         <input type="email" class="ref-email" value="${ref.email}" placeholder="Email" required>
         <span class="error-message"></span>
       </div>
-      <button class="delete-btn" onclick="deleteReference(${index})">Delete</button>
+      
+      <div class="edit-mode">
+        <button class="delete-btn" onclick="deleteReference(${index})">Delete</button>
+      </div>
     </div>
   `).join('');
+}
+
+function editSection(sectionId, event) {
+  event.stopPropagation();
+  const section = document.getElementById(sectionId);
+  section.classList.toggle('editing');
+  
+  // If we're exiting edit mode, save the changes
+  if (!section.classList.contains('editing')) {
+    saveData();
+  }
 }
 
 function addEducation() {
@@ -157,6 +208,7 @@ function addEducation() {
     gpa: ""
   });
   renderEducation();
+  document.getElementById('education').classList.add('editing');
 }
 
 function deleteEducation(index) {
@@ -167,6 +219,7 @@ function deleteEducation(index) {
 function addSkill() {
   data.skills.push("");
   renderSkills();
+  document.getElementById('skills').classList.add('editing');
 }
 
 function deleteSkill(index) {
@@ -177,6 +230,7 @@ function deleteSkill(index) {
 function addLanguage() {
   data.languages.push("");
   renderLanguages();
+  document.getElementById('languages').classList.add('editing');
 }
 
 function deleteLanguage(index) {
@@ -191,6 +245,7 @@ function addExperience() {
     responsibilities: []
   });
   renderExperience();
+  document.getElementById('experience').classList.add('editing');
 }
 
 function deleteExperience(index) {
@@ -216,13 +271,13 @@ function addReference() {
     email: ""
   });
   renderReferences();
+  document.getElementById('references').classList.add('editing');
 }
 
 function deleteReference(index) {
   data.references.splice(index, 1);
   renderReferences();
 }
-
 
 function toggleSection(header) {
   const dropdown = header.parentElement;
@@ -246,10 +301,10 @@ function saveData() {
   data.profile = elements.profile.value;
 
   data.education = Array.from(document.querySelectorAll('.education-item')).map(item => ({
-    years: item.querySelector('.years').value,
-    school: item.querySelector('.school').value,
-    degree: item.querySelector('.degree').value,
-    gpa: item.querySelector('.gpa').value
+    years: item.querySelector('.years')?.value || '',
+    school: item.querySelector('.school')?.value || '',
+    degree: item.querySelector('.degree')?.value || '',
+    gpa: item.querySelector('.gpa')?.value || ''
   }));
 
   data.skills = Array.from(document.querySelectorAll('.skill-input')).map(input => input.value);
@@ -257,17 +312,16 @@ function saveData() {
   data.languages = Array.from(document.querySelectorAll('.language-input')).map(input => input.value);
 
   data.experience = Array.from(document.querySelectorAll('.experience-item')).map(item => ({
-    company: item.querySelector('.company').value,
-    title: item.querySelector('.job-title').value,
+    company: item.querySelector('.company')?.value || '',
+    title: item.querySelector('.job-title')?.value || '',
     responsibilities: Array.from(item.querySelectorAll('.responsibility input')).map(input => input.value)
   }));
 
-
   data.references = Array.from(document.querySelectorAll('.reference-item')).map(item => ({
-    name: item.querySelector('.ref-name').value,
-    position: item.querySelector('.ref-position').value,
-    phone: item.querySelector('.ref-phone').value,
-    email: item.querySelector('.ref-email').value
+    name: item.querySelector('.ref-name')?.value || '',
+    position: item.querySelector('.ref-position')?.value || '',
+    phone: item.querySelector('.ref-phone')?.value || '',
+    email: item.querySelector('.ref-email')?.value || ''
   }));
 
   localStorage.setItem('resumeData', JSON.stringify(data));
@@ -323,32 +377,33 @@ function validateForm() {
       clearError(field);
     }
   });
+
   document.querySelectorAll('.education-item').forEach((item, index) => {
     const years = item.querySelector('.years');
     const school = item.querySelector('.school');
     const degree = item.querySelector('.degree');
 
-    if (!years.value.trim()) {
+    if (years && !years.value.trim()) {
       showError(years, "Years are required");
       isValid = false;
-    } else if (!validationPatterns.yearRange.test(years.value)) {
+    } else if (years && !validationPatterns.yearRange.test(years.value)) {
       showError(years, "Format: YYYY-YYYY");
       isValid = false;
-    } else {
+    } else if (years) {
       clearError(years);
     }
 
-    if (!school.value.trim()) {
+    if (school && !school.value.trim()) {
       showError(school, "School is required");
       isValid = false;
-    } else {
+    } else if (school) {
       clearError(school);
     }
 
-    if (!degree.value.trim()) {
+    if (degree && !degree.value.trim()) {
       showError(degree, "Degree is required");
       isValid = false;
-    } else {
+    } else if (degree) {
       clearError(degree);
     }
   });
@@ -370,23 +425,25 @@ function validateForm() {
       clearError(lang);
     }
   });
+
   document.querySelectorAll('.experience-item').forEach(exp => {
     const company = exp.querySelector('.company');
     const title = exp.querySelector('.job-title');
 
-    if (!company.value.trim()) {
+    if (company && !company.value.trim()) {
       showError(company, "Company is required");
       isValid = false;
-    } else {
+    } else if (company) {
       clearError(company);
     }
 
-    if (!title.value.trim()) {
+    if (title && !title.value.trim()) {
       showError(title, "Job title is required");
       isValid = false;
-    } else {
+    } else if (title) {
       clearError(title);
     }
+
     exp.querySelectorAll('.responsibility input').forEach(resp => {
       if (!resp.value.trim()) {
         showError(resp, "Responsibility cannot be empty");
@@ -403,37 +460,37 @@ function validateForm() {
     const phone = ref.querySelector('.ref-phone');
     const email = ref.querySelector('.ref-email');
 
-    if (!name.value.trim()) {
+    if (name && !name.value.trim()) {
       showError(name, "Name is required");
       isValid = false;
-    } else {
+    } else if (name) {
       clearError(name);
     }
 
-    if (!position.value.trim()) {
+    if (position && !position.value.trim()) {
       showError(position, "Position is required");
       isValid = false;
-    } else {
+    } else if (position) {
       clearError(position);
     }
 
-    if (!phone.value.trim()) {
+    if (phone && !phone.value.trim()) {
       showError(phone, "Phone is required");
       isValid = false;
-    } else if (!validationPatterns.phone.test(phone.value)) {
+    } else if (phone && !validationPatterns.phone.test(phone.value)) {
       showError(phone, "Please enter a valid phone number");
       isValid = false;
-    } else {
+    } else if (phone) {
       clearError(phone);
     }
 
-    if (!email.value.trim()) {
+    if (email && !email.value.trim()) {
       showError(email, "Email is required");
       isValid = false;
-    } else if (!validationPatterns.email.test(email.value)) {
+    } else if (email && !validationPatterns.email.test(email.value)) {
       showError(email, "Please enter a valid email address");
       isValid = false;
-    } else {
+    } else if (email) {
       clearError(email);
     }
   });
@@ -448,6 +505,7 @@ function showError(field, message) {
     field.classList.add('invalid');
   }
 }
+
 function clearError(field) {
   const errorElement = field.nextElementSibling;
   if (errorElement && errorElement.classList.contains('error-message')) {
@@ -480,6 +538,7 @@ function setupValidation() {
       clearError(elements.website);
     }
   });
+
   document.addEventListener('input', (e) => {
     if (e.target.classList.contains('years')) {
       if (!validationPatterns.yearRange.test(e.target.value)) {
