@@ -22,7 +22,7 @@
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Contact</div>
+        <div class="section-header" onclick="toggleSection(this)">Contact <span class="edit-icon" onclick="editSection('contact', event)">✏️</span></div>
         <div class="dropdown-content" id="contact">
           <div class="form-group">
             <input type="tel" id="phone-input" placeholder="Phone" class="text-small" required>
@@ -44,19 +44,19 @@
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Education</div>
+        <div class="section-header" onclick="toggleSection(this)">Education <span class="edit-icon" onclick="editSection('education', event)">✏️</span></div>
         <div class="dropdown-content" id="education"></div>
         <button onclick="addEducation()">Add</button>
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Skills</div>
+        <div class="section-header" onclick="toggleSection(this)">Skills <span class="edit-icon" onclick="editSection('skills', event)">✏️</span></div>
         <div class="dropdown-content" id="skills" class="skills"></div>
         <button onclick="addSkill()">Add</button>
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Languages</div>
+        <div class="section-header" onclick="toggleSection(this)">Languages <span class="edit-icon" onclick="editSection('languages', event)">✏️</span></div>
         <div class="dropdown-content" id="languages"></div>
         <button onclick="addLanguage()">Add</button>
       </div>
@@ -64,7 +64,7 @@
 
     <div id="right">
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Profile</div>
+        <div class="section-header" onclick="toggleSection(this)">Profile <span class="edit-icon" onclick="editSection('profile', event)">✏️</span></div>
         <div class="dropdown-content">
           <div class="form-group">
             <textarea id="profile-input" placeholder="Professional summary" class="text-small" required maxlength="500"></textarea>
@@ -74,13 +74,13 @@
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">Work Experience</div>
+        <div class="section-header" onclick="toggleSection(this)">Work Experience <span class="edit-icon" onclick="editSection('experience', event)">✏️</span></div>
         <div class="dropdown-content" id="experience"></div>
         <button onclick="addExperience()">Add</button>
       </div>
 
       <div class="dropdown">
-        <div class="section-header" onclick="toggleSection(this)">References</div>
+        <div class="section-header" onclick="toggleSection(this)">References <span class="edit-icon" onclick="editSection('references', event)">✏️</span></div>
         <div class="dropdown-content" id="references"></div>
         <button onclick="addReference()">Add</button>
       </div>
