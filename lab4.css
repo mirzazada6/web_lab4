@@ -50,6 +50,15 @@ body {
   margin: 25px 0 15px;
   text-transform: uppercase;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-icon {
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
 }
 
 #left .section-header {
@@ -177,4 +186,25 @@ input:invalid, textarea:invalid {
 
 .delete-btn:hover {
   background: #d32f2f;
+}
+
+.view-mode {
+  display: block;
+  margin: 5px 0;
+}
+
+.edit-mode {
+  display: none;
+}
+
+.editing .view-mode {
+  display: none;
+}
+
+.editing .edit-mode {
+  display: block;
+}
+
+.editing .add-btn {
+  display: none;
 }
